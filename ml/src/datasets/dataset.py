@@ -50,7 +50,8 @@ class ChestXrayDataset(Dataset):
             image = self.transform(image)
 
         labels = torch.tensor(
-            row[self.DISEASES].values.astype("float32")
-        )
+            row[self.DISEASES].values.astype("float32"),
+            dtype=torch.float32,
+            )
 
         return image, labels
