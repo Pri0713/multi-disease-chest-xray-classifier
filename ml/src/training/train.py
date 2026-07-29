@@ -4,11 +4,11 @@ train.py
 Main training script.
 """
 
-import torch
-import torch.nn as nn
-import torch.optim as optim
-
-from configs.config import (
+from src.models.model import get_model
+from src.datasets.dataloader import get_dataloaders
+from src.training.trainer import train_one_epoch
+from src.training.validate import validate
+from src.utils.config import (
     DEVICE,
     BATCH_SIZE,
     TRAIN_CSV,
@@ -18,13 +18,6 @@ from configs.config import (
     EPOCHS,
     CHECKPOINT_DIR,
 )
-
-from models.model import get_model
-from datasets.dataloader import get_dataloaders
-
-from training.trainer import train_one_epoch
-from training.validate import validate
-
 
 def main():
 
