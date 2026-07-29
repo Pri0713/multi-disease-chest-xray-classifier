@@ -3,7 +3,9 @@ train.py
 
 Main training script.
 """
-
+import torch
+import torch.nn as nn
+import torch.optim as optim
 from src.models.model import get_model
 from src.datasets.dataloader import get_dataloaders
 from src.training.trainer import train_one_epoch
