@@ -75,12 +75,18 @@ def main():
             DEVICE,
         )
 
+        print("✅ Training finished")
+
+        print("➡️ Starting validation...")
+
         val_loss = validate(
             model,
             val_loader,
             criterion,
             DEVICE,
         )
+
+        print("✅ Validation finished")
 
         print(f"Train Loss: {train_loss:.4f}")
         print(f"Validation Loss: {val_loss:.4f}")
