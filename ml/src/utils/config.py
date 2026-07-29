@@ -44,4 +44,6 @@ EPOCHS = 5
 # Checkpoints
 # ==========================
 
-CHECKPOINT_DIR = "checkpoints"
+from pathlib import Path
+
+CHECKPOINT_DIR = Path("checkpoints")

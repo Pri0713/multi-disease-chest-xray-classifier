@@ -6,6 +6,7 @@ Main training script.
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from pathlib import Path
 from src.models.model import get_model
 from src.datasets.dataloader import get_dataloaders
 from src.training.trainer import train_one_epoch
@@ -58,6 +59,8 @@ def main():
         lr=LEARNING_RATE,
     )
 
+    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
+
     best_val_loss = float("inf")
 
     # --------------------------
@@ -96,8 +99,9 @@ def main():
 
             best_val_loss = val_loss
 
-            save_path = CHECKPOINT_DIR / "best_model.pth"
+           
 
+            save_path = Path(CHECKPOINT_DIR) / "best_model.pth"
             torch.save(
                 model.state_dict(),
                 save_path,
