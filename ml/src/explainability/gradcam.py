@@ -4,6 +4,7 @@ gradcam.py
 Generate Grad-CAM visualization for a chest X-ray.
 """
 
+import sys
 import cv2
 import numpy as np
 import torch
@@ -14,6 +15,7 @@ from src.models.model import get_model
 from src.datasets.transforms import val_transform
 from src.utils.config import DEVICE
 
+
 class GradCAM:
 
     def __init__(self, model, target_layer):
@@ -21,16 +23,11 @@ class GradCAM:
         self.model = model
         self.target_layer = target_layer
 
-        self.gradients = None
         self.activations = None
+        self.gradients = None
 
-        self.target_layer.register_forward_hook(
-            self.save_activation
-        )
-
-        self.target_layer.register_full_backward_hook(
-            self.save_gradient
-        )
+        target_layer.register_forward_hook(self.save_activation)
+        target_layer.register_full_backward_hook(self.save_gradient)
 
     def save_activation(self, module, input, output):
         self.activations = output
@@ -38,20 +35,17 @@ class GradCAM:
     def save_gradient(self, module, grad_input, grad_output):
         self.gradients = grad_output[0]
 
-        def generate(self, class_idx):
+    def generate(self, target):
 
-        # Backpropagate for the selected class
         self.model.zero_grad()
 
-        class_idx.backward()
+        target.backward(retain_graph=True)
 
         gradients = self.gradients[0]
         activations = self.activations[0]
 
-        # Global average pooling of gradients
         weights = gradients.mean(dim=(1, 2))
 
-        # Weighted sum of feature maps
         cam = torch.zeros(
             activations.shape[1:],
             device=activations.device,
@@ -68,9 +62,9 @@ class GradCAM:
 
         return cam.cpu().numpy()
 
-    def generate_gradcam(image_path):
 
-    # Load model
+def generate_gradcam(image_path):
+
     model = get_model()
 
     checkpoint = "/kaggle/input/datasets/priyanka0713/best-model/best_model.pth"
@@ -82,69 +76,56 @@ class GradCAM:
     model.to(DEVICE)
     model.eval()
 
-    # Last convolutional layer of DenseNet-121
     target_layer = model.features.denseblock4.denselayer16.conv2
 
-    gradcam = GradCAM(
-        model,
-        target_layer,
-    )
+    gradcam = GradCAM(model, target_layer)
 
-    # Load image
     image = Image.open(image_path).convert("RGB")
 
-    original_image = np.array(image)
+    original = np.array(image)
 
-    image_tensor = val_transform(image)
+    image_tensor = val_transform(image).unsqueeze(0).to(DEVICE)
 
-    image_tensor = image_tensor.unsqueeze(0).to(DEVICE)
-
-        # Forward pass
     outputs = model(image_tensor)
 
-    # Predicted class
-    class_idx = outputs[0].argmax()
+    class_idx = outputs.argmax(dim=1)
 
-    # Generate heatmap
     heatmap = gradcam.generate(outputs[0, class_idx])
 
-    # Resize heatmap
     heatmap = cv2.resize(
         heatmap,
-        (original_image.shape[1], original_image.shape[0])
+        (original.shape[1], original.shape[0])
     )
 
     heatmap = np.uint8(255 * heatmap)
+
     heatmap = cv2.applyColorMap(
         heatmap,
         cv2.COLORMAP_JET,
     )
 
-    # Overlay heatmap on image
     overlay = cv2.addWeighted(
-        original_image,
+        original,
         0.6,
         heatmap,
         0.4,
         0,
     )
 
-    # Display
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(12,6))
 
-    plt.subplot(1, 2, 1)
-    plt.imshow(original_image)
-    plt.title("Original X-ray")
+    plt.subplot(1,2,1)
+    plt.imshow(original)
+    plt.title("Original")
     plt.axis("off")
 
-    plt.subplot(1, 2, 2)
+    plt.subplot(1,2,2)
     plt.imshow(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB))
     plt.title("Grad-CAM")
     plt.axis("off")
 
     plt.show()
 
-    import sys
 
 if __name__ == "__main__":
 
