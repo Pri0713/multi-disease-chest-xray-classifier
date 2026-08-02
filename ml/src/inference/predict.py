@@ -45,7 +45,7 @@ def predict(image_path):
     print("\nDisease Probabilities:\n")
 
     for disease, prob in zip(DISEASE_LABELS, probabilities):
-    print(f"{disease:20s}: {prob:.4f}")
+        print(f"{disease:20s}: {prob:.4f}")
 if __name__ == "__main__":
 
     if len(sys.argv) != 2:
