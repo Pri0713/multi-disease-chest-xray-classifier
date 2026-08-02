@@ -40,7 +40,7 @@ def evaluate():
     # -------------------------
     model = get_model()
 
-    checkpoint = CHECKPOINT_DIR / "best_model.pth"
+    checkpoint = "/kaggle/input/datasets/priyanka0713/best-model/best_model.pth"
 
     model.load_state_dict(
         torch.load(checkpoint, map_location=DEVICE)
