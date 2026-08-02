@@ -60,7 +60,7 @@ class GradCAM:
 
         cam /= (cam.max() + 1e-8)
 
-        return cam.cpu().numpy()
+        return cam.detach().cpu().numpy()
 
 
 def generate_gradcam(image_path):
