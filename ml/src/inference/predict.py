@@ -6,6 +6,7 @@ Run inference on a single chest X-ray image.
 
 import torch
 from PIL import Image
+import sys
 
 from src.models.model import get_model
 from src.datasets.transforms import val_transform
@@ -54,6 +55,10 @@ def predict(image_path):
         print("No disease detected.")
 if __name__ == "__main__":
 
-    image_path = input("Enter image path: ")
+    if len(sys.argv) != 2:
+        print("Usage: python -m src.inference.predict <image_path>")
+        sys.exit(1)
+
+    image_path = sys.argv[1]
 
     predict(image_path)
