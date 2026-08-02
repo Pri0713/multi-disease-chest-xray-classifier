@@ -42,17 +42,10 @@ def predict(image_path):
 
     print("\nPredicted Diseases:\n")
 
-    threshold = 0.5
-
-    found = False
+    print("\nDisease Probabilities:\n")
 
     for disease, prob in zip(DISEASE_LABELS, probabilities):
-        if prob >= threshold:
-            print(f"✓ {disease}: {prob:.4f}")
-            found = True
-
-    if not found:
-        print("No disease detected.")
+    print(f"{disease:20s}: {prob:.4f}")
 if __name__ == "__main__":
 
     if len(sys.argv) != 2:
