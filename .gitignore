@@ -220,3 +220,7 @@ __marimo__/
 # ML model checkpoints and local test images
 ml/checkpoints/*.pth
 ml/test_xray.*
+
+# ONNX model files
+ml/checkpoints/*.onnx
+ml/checkpoints/*.onnx.data
