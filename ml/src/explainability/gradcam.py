@@ -3,7 +3,7 @@ gradcam.py
 
 Generate Grad-CAM visualization for a chest X-ray.
 """
-
+from src.datasets.labels import DISEASE_LABELS
 import sys
 import cv2
 import numpy as np
@@ -67,8 +67,7 @@ def generate_gradcam(image_path):
 
     model = get_model()
 
-    checkpoint = "/kaggle/input/datasets/priyanka0713/best-model/best_model.pth"
-
+    checkpoint = "checkpoints/best_model.pth"
     model.load_state_dict(
         torch.load(checkpoint, map_location=DEVICE)
     )
@@ -89,7 +88,8 @@ def generate_gradcam(image_path):
     outputs = model(image_tensor)
 
     class_idx = outputs.argmax(dim=1)
-
+    class_name = DISEASE_LABELS[class_idx.item()]
+    print(f"\nGrad-CAM explanation for: {class_name}")
     heatmap = gradcam.generate(outputs[0, class_idx])
 
     heatmap = cv2.resize(
