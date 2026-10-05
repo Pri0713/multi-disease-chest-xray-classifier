@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ML model checkpoints and local test images
+ml/checkpoints/*.pth
+ml/test_xray.*

@@ -18,8 +18,7 @@ def predict(image_path):
     # Load model
     model = get_model()
 
-    checkpoint = "/kaggle/input/datasets/priyanka0713/best-model/best_model.pth"
-
+    checkpoint = "checkpoints/best_model.pth"
     model.load_state_dict(
         torch.load(checkpoint, map_location=DEVICE)
     )
@@ -44,8 +43,16 @@ def predict(image_path):
 
     print("\nDisease Probabilities:\n")
 
+    results = []
+
     for disease, prob in zip(DISEASE_LABELS, probabilities):
+        results.append({
+            "disease": disease,
+            "probability": float(prob),
+        })
         print(f"{disease:20s}: {prob:.4f}")
+
+    return results
 if __name__ == "__main__":
 
     if len(sys.argv) != 2:
