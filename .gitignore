@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ML model checkpoints
+ml/checkpoints/*.pth
+ml/checkpoints/best_model_backup/
+ml/checkpoints/reconstructed/
