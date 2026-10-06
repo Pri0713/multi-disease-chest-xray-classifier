@@ -221,3 +221,10 @@ __marimo__/
 ml/checkpoints/*.pth
 ml/checkpoints/best_model_backup/
 ml/checkpoints/reconstructed/
+
+# ML local test images
+ml/test_xray.*
+
+# ONNX model files
+ml/checkpoints/*.onnx
+ml/checkpoints/*.onnx.data
