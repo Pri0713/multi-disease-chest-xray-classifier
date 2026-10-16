@@ -228,3 +228,13 @@ ml/test_xray.*
 # ONNX model files
 ml/checkpoints/*.onnx
 ml/checkpoints/*.onnx.data
+# Frontend dependencies
+frontend/node_modules/
+
+# Local Grad-CAM test outputs
+gradcam-headers.txt
+gradcam-result.png
+
+# Local ML test images
+ml/random1.jpeg
+ml/random2.jpeg
