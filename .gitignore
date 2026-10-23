@@ -217,6 +217,27 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+
+# ML model checkpoints
 *.pth
-best_model_backup
-reconstructed
+ml/checkpoints/best_model_backup/
+ml/checkpoints/reconstructed/
+
+# ML local test images
+ml/test_xray.*
+ml/random1.jpeg
+ml/random2.jpeg
+
+# ONNX model exports
+ml/checkpoints/*.onnx
+ml/checkpoints/*.onnx.data
+
+# Frontend dependencies
+frontend/node_modules/
+
+# Local Grad-CAM test outputs
+gradcam-headers.txt
+gradcam-result.png
+
+# ML dataset split files
+ml/data/splits/*.csv
